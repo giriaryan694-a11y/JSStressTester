@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSStressTester</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: monospace;
+      text-align: center;
+      padding: 20px;
+    }
+    input, select, button {
+      margin: 8px;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    button {
+      background: #00ff00;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #log {
+      margin-top: 20px;
+      padding: 10px;
+      background: #111;
+      border: 1px solid #00ff00;
+      height: 250px;
+      overflow-y: auto;
+      text-align: left;
+    }
+    footer {
+      margin-top: 25px;
+      padding-top: 10px;
+      border-top: 1px solid #00ff00;
+      font-size: 14px;
+      color: #00ff00;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ JSStressTester ⚡</h1>
+  <p><b>⚠️ Legal Warning:</b> This tool is only for <u>educational purposes</u> 
+  and authorized testing. Do NOT use it against systems you do not own or lack permission to test. 
+  Misuse may lead to <u>law enforcement action</u>, criminal charges, or civil liability. 
+  The developer is <u>not responsible</u> for misuse.</p>
+
+  <label>Target URL:</label>
+  <input type="text" id="url" placeholder="https://example.com"><br>
+
+  <label>Number of Requests:</label>
+  <input type="number" id="count" value="10"><br>
+
+  <label>Delay (ms):</label>
+  <input type="number" id="delay" value="500"><br>
+
+  <button onclick="startTest()">Start Test</button>
+  <button onclick="stopTest()">Stop</button>
+
+  <div id="log"></div>
+
+  <footer>
+    ⚡ Developed by <b>Aryan Giri</b> | The developer is not responsible for any misuse ⚡
+  </footer>
+
+  <script>
+    let stopFlag = false;
+
+    function sendRequest(url, i) {
+      // Force browser to make a real request by using image tag
+      const img = new Image();
+      img.src = url + "?req=" + i + "&ts=" + Date.now(); 
+      logMessage("✅ Request " + i + " sent (via IMG tag)");
+    }
+
+    function logMessage(msg) {
+      const log = document.getElementById("log");
+      log.innerHTML += msg + "<br>";
+      log.scrollTop = log.scrollHeight;
+    }
+
+    async function startTest() {
+      stopFlag = false;
+      const url = document.getElementById("url").value;
+      const count = parseInt(document.getElementById("count").value);
+      const delay = parseInt(document.getElementById("delay").value);
+
+      logMessage("🚀 Starting test: " + count + " requests to " + url);
+
+      for (let i = 1; i <= count; i++) {
+        if (stopFlag) {
+          logMessage("🛑 Test stopped.");
+          break;
+        }
+        sendRequest(url, i);
+        await new Promise(r => setTimeout(r, delay));
+      }
+
+      if (!stopFlag) logMessage("✅ Test completed.");
+    }
+
+    function stopTest() {
+      stopFlag = true;
+    }
+  </script>
+</body>
+</html>
