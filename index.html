@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JSStressTester</title>
   <style>
     body {
@@ -13,10 +14,14 @@
     }
     input, select, button {
       margin: 8px;
-      padding: 8px;
+      padding: 10px;
       border-radius: 6px;
       border: none;
       outline: none;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
     }
     button {
       background: #00ff00;
@@ -32,6 +37,7 @@
       height: 250px;
       overflow-y: auto;
       text-align: left;
+      font-size: 0.9rem;
     }
     footer {
       margin-top: 25px;
@@ -39,6 +45,24 @@
       border-top: 1px solid #00ff00;
       font-size: 14px;
       color: #00ff00;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      input, button {
+        font-size: 0.95rem;
+        padding: 8px;
+      }
+      #log {
+        font-size: 0.8rem;
+        height: 200px;
+      }
     }
   </style>
 </head>
@@ -49,13 +73,13 @@
   Misuse may lead to <u>law enforcement action</u>, criminal charges, or civil liability. 
   The developer is <u>not responsible</u> for misuse.</p>
 
-  <label>Target URL:</label>
+  <label>Target URL:</label><br>
   <input type="text" id="url" placeholder="https://example.com"><br>
 
-  <label>Number of Requests:</label>
+  <label>Number of Requests:</label><br>
   <input type="number" id="count" value="10"><br>
 
-  <label>Delay (ms):</label>
+  <label>Delay (ms):</label><br>
   <input type="number" id="delay" value="500"><br>
 
   <button onclick="startTest()">Start Test</button>
@@ -71,7 +95,6 @@
     let stopFlag = false;
 
     function sendRequest(url, i) {
-      // Force browser to make a real request by using image tag
       const img = new Image();
       img.src = url + "?req=" + i + "&ts=" + Date.now(); 
       logMessage("✅ Request " + i + " sent (via IMG tag)");
